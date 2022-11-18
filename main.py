@@ -1,18 +1,39 @@
 import random
 import sys
-import math
+import random
 
-from PyQt5 import uic
-from PyQt5.QtGui import QPainter, QColor, QPainterPath
-from PyQt5.QtCore import Qt, QPointF
+from PyQt5.QtGui import QPainter, QColor
 from PyQt5.QtWidgets import QApplication, QMainWindow
 
 
-class Example(QMainWindow):
+from PyQt5 import QtCore, QtWidgets
+
+
+class Ui_MainWindow(object):
+    def setupUi(self, MainWindow):
+        MainWindow.setObjectName("MainWindow")
+        MainWindow.resize(500, 400)
+        self.centralwidget = QtWidgets.QWidget(MainWindow)
+        self.centralwidget.setObjectName("centralwidget")
+        self.btn = QtWidgets.QPushButton(self.centralwidget)
+        self.btn.setGeometry(QtCore.QRect(200, 330, 100, 40))
+        self.btn.setObjectName("btn")
+        MainWindow.setCentralWidget(self.centralwidget)
+
+        self.retranslateUi(MainWindow)
+        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
+    def retranslateUi(self, MainWindow):
+        _translate = QtCore.QCoreApplication.translate
+        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        self.btn.setText(_translate("MainWindow", "Кнопка"))
+
+
+class Example(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super().__init__()
         self.is_on = False
-        uic.loadUi('circle.ui', self)
+        self.setupUi(self)
         self.initUI()
 
     def initUI(self):
@@ -26,8 +47,8 @@ class Example(QMainWindow):
         if self.is_on:
             qp = QPainter()
             qp.begin(self)
-            qp.setPen(QColor(250, 210, 1))
             for _ in range(25):
+                qp.setPen(QColor(*[random.randint(1, 255) for _ in range(3)]))
                 self.draw_circle(qp)
             qp.end()
 
